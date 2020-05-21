@@ -1,6 +1,7 @@
 <h1>Migration</h1>
 
 - [From version 5.3.x to 6.0.x](#from-version-53x-to-60x)
+  - [Zero config typescript](#zero-config-typescript)
   - [Backgrounds addon has a new api](#backgrounds-addon-has-a-new-api)
   - [CRA preset removed](#cra-preset-removed)
   - [Args passed as first argument to story](#args-passed-as-first-argument-to-story)
@@ -23,9 +24,10 @@
   - [Story Store immutable outside of configuration](#story-store-immutable-outside-of-configuration)
   - [Improved story source handling](#improved-story-source-handling)
   - [6.0 Addon API changes](#60-addon-api-changes)
-    - [Actions Addon uses parameters](#actions-addon-uses-parameters)
+    - [Actions addon uses parameters](#actions-addon-uses-parameters)
     - [Removed action decorator APIs](#removed-action-decorator-apis)
     - [Removed withA11y decorator](#removed-witha11y-decorator)
+    - [Essentials addon disables differently](#essentials-addon-disables-differently)
   - [6.0 Deprecations](#60-deprecations)
     - [Deprecated addon-info, addon-notes](#deprecated-addon-info-addon-notes)
     - [Deprecated addon-contexts](#deprecated-addon-contexts)
@@ -111,6 +113,12 @@
   - [Deprecated embedded addons](#deprecated-embedded-addons)
 
 ## From version 5.3.x to 6.0.x
+
+### Zero config typescript
+
+Storybook has built-in Typescript support in 6.0. That means you should remove your complex Typescript configurations from your `.storybook` config. We've tried to pick sensible defaults that work out of the box, especially for nice prop table generation in `@storybook/addon-docs`.
+
+To migrate from an old setup, we recommend deleting any typescript-specific webpack/babel configurations in your project. If you want to override the defaults, see the [typescript configuration docs](https://github.com/storybookjs/storybook/blob/next/docs/src/pages/configurations/typescript-config/index.md).
 
 ### Backgrounds addon has a new api
 
@@ -470,7 +478,7 @@ The MDX analog:
 
 ### 6.0 Addon API changes
 
-#### Actions Addon uses parameters
+#### Actions addon uses parameters
 
 Leveraging the new preset `@storybook/addon-actions` uses parameters to pass action options. If you previously had:
 
@@ -514,6 +522,10 @@ addParameters({
   }
 };
 ```
+
+#### Essentials addon disables differently
+
+In 6.0, `addon-essentials` doesn't configure addons if the user has already configured them in `main.js`. In 5.3 it previously checked to see whether the package had been installed in `package.json` to disable configuration. The new setup is preferably because now users' can install essential packages and import from them without disabling their configuration.
 
 ### 6.0 Deprecations
 
